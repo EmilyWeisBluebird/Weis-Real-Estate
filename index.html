@@ -189,6 +189,29 @@
 
   .helper-note.visible { display: block; }
 
+  .helper-note a {
+    color: var(--gold);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .helper-note a:hover { color: var(--gold-light); }
+
+  /* Standalone home value link */
+  .home-value-link {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-bottom: 20px;
+    margin-top: -4px;
+  }
+
+  .home-value-link:hover { color: var(--gold-light); }
+
   .divider { height: 1px; background: var(--border); margin: 32px 0; }
 
   .conditional-section {
@@ -355,9 +378,17 @@
           <button class="toggle-btn" onclick="selectHomeValue('unknown', this)">I'm not sure</button>
         </div>
 
+        <!-- Standalone link visible to all sellers -->
+        <a
+          href="https://thomasweis.silvercreekrealty.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="home-value-link"
+        >Click here for a quick and free home value estimate →</a>
+
         <!-- Helper note for unknown home value -->
         <div class="helper-note" id="unknownHomeValueNote">
-          No problem — I offer a free home value assessment. I'll pull your comps on the call so you know exactly what your home is worth.
+          No problem — I offer a free home value assessment. I'll pull your comps on the call so you know exactly what your home is worth. You can also <a href="https://thomasweis.silvercreekrealty.com" target="_blank" rel="noopener noreferrer">click here for a quick and free home value estimate</a> right now.
         </div>
 
         <div class="toggle-label">What is your reason for selling?</div>
@@ -458,7 +489,6 @@
 
     if (status === 'no') {
       note.classList.add('visible');
-      // Grey out and disable price range
       priceLabel.classList.add('greyed');
       priceBtns.forEach(b => {
         b.disabled = true;
@@ -499,7 +529,6 @@
       return;
     }
 
-    // Collect all toggle selections
     const getSelected = (groupId) => {
       const active = document.querySelector(`#${groupId} .toggle-btn.active`);
       return active ? active.textContent.trim() : 'Not answered';
@@ -520,7 +549,6 @@
       'Working With Another Agent': getSelected('otherAgentGroup'),
     };
 
-    // Disable button while submitting
     const btn = document.querySelector('.submit-btn');
     btn.textContent = 'Submitting...';
     btn.disabled = true;
