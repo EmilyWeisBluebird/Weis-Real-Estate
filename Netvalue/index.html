@@ -1,54 +1,521 @@
-WEIS REAL ESTATE
-Call Tom at 208-254-1963
-FREE SELLER ESTIMATE
-What will you walk away with?
-See your real number: home value minus payoff, closing costs, commission, and repairs, in under a minute.
-Estimated home value
-$
-450,000
-Your best guess is fine. This is a starting point, not an appraisal.
-Remaining mortgage balance
-$
-240,000
-Repairs or prep before listing
-$
-0
-Paint, flooring, inspection items. Enter 0 if you're not sure yet.
-Adjust commission & closing cost assumptions
-Est. agent commission
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Will You Actually Walk Away With? | Weis Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16283F;
+    --navy-soft:#22384f;
+    --steel:#4E6E8E;
+    --cream:#F6F1E7;
+    --parchment:#EFE7D8;
+    --gold:#A8823D;
+    --gold-deep:#8C6B2E;
+    --charcoal:#26241F;
+    --rule:#D8CDB3;
+    --rule-strong:#B9AD8C;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'DM Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    color:var(--navy);
+    margin:0;
+  }
+  .mono{font-family:'DM Mono', monospace;}
+  a{color:var(--steel);}
 
-5.5%
-Est. closing costs
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 6vw;
+    border-bottom:1px solid var(--rule);
+  }
+  .wordmark{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.35rem;
+    letter-spacing:0.06em;
+    color:var(--navy);
+    font-weight:600;
+    text-transform:uppercase;
+  }
+  header a.callnow{
+    font-family:'DM Sans', sans-serif;
+    font-size:0.85rem;
+    font-weight:700;
+    color:var(--navy);
+    text-decoration:none;
+    border:1px solid var(--navy);
+    padding:9px 16px;
+    border-radius:2px;
+    letter-spacing:0.03em;
+    transition:background .2s ease, color .2s ease;
+  }
+  header a.callnow:hover{background:var(--navy); color:var(--cream);}
 
-1.5%
-Estimated Closing Statement
-Estimated sale price
-$450,000
-Mortgage payoff
-$240,000
-Agent commission
-5.5%
-$24,750
-Closing costs
-1.5%
-$6,750
-Repairs / prep
-$0
-Estimated net proceeds
-$178,500
-This is a planning estimate only, not a guarantee. Your actual home value, loan payoff, commission, and closing fees could move this number up or down. See what's possible below.
-Your real number, and how to raise it.
-This is a planning estimate. Tom will pull real comps for an accurate value, tell you which repairs are worth doing, and build a pricing strategy to help you walk away with more than this. Free and no obligation.
-Full name
-Phone
-Email
-Timeline
-          Ready now / ASAP
-          3 to 6 months
-          Just curious
-        
-Property address (optional)
-Start my free strategy call
-Sent straight to Tom. Most sellers hear back same day.
-Weis Real Estate, Silvercreek Realty Group, License #ID-SP50429
-© 2026 Weis Real Estate
+  .hero{
+    padding:64px 6vw 40px;
+    max-width:760px;
+  }
+  .eyebrow{
+    font-family:'DM Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    color:var(--gold-deep);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 5vw, 3.1rem);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  .hero p.sub{
+    margin-top:18px;
+    font-size:1.08rem;
+    color:var(--steel);
+    max-width:56ch;
+  }
+
+  .calc-wrap{
+    padding:8px 6vw 64px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .calc-wrap{grid-template-columns:1fr; gap:28px;}
+    .hero{padding:44px 6vw 28px;}
+  }
+
+  .inputs-card{
+    background:transparent;
+  }
+  .field{margin-bottom:26px;}
+  .field label{
+    display:block;
+    font-size:0.82rem;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:8px;
+    letter-spacing:0.01em;
+  }
+  .field .field-note{
+    font-size:0.78rem;
+    color:var(--steel);
+    margin-top:6px;
+  }
+  .currency-input{
+    position:relative;
+  }
+  .currency-input span{
+    position:absolute;
+    left:14px; top:50%;
+    transform:translateY(-50%);
+    color:var(--steel);
+    font-family:'DM Mono', monospace;
+    font-size:1rem;
+  }
+  .currency-input input{
+    width:100%;
+    padding:13px 14px 13px 30px;
+    font-family:'DM Mono', monospace;
+    font-size:1.05rem;
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    background:#fff;
+    color:var(--navy);
+  }
+  .currency-input input:focus{
+    outline:2px solid var(--steel);
+    outline-offset:1px;
+  }
+
+  details.assumptions{
+    margin-top:8px;
+    border-top:1px solid var(--rule);
+    padding-top:18px;
+  }
+  details.assumptions summary{
+    cursor:pointer;
+    font-size:0.85rem;
+    font-weight:700;
+    color:var(--steel);
+    list-style:none;
+  }
+  details.assumptions summary::-webkit-details-marker{display:none;}
+  details.assumptions summary:before{content:"+ "; color:var(--gold-deep);}
+  details.assumptions[open] summary:before{content:"- ";}
+  .assumption-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:16px;
+    gap:12px;
+  }
+  .assumption-row label{font-size:0.85rem; color:var(--charcoal); font-weight:500;}
+  .assumption-row input[type=range]{flex:1; accent-color:var(--gold);}
+  .assumption-row .pct-val{
+    font-family:'DM Mono', monospace;
+    font-size:0.85rem;
+    width:44px;
+    text-align:right;
+    color:var(--navy);
+  }
+
+  .ledger{
+    background:var(--parchment);
+    border:1px solid var(--rule-strong);
+    padding:34px 30px 30px;
+    position:relative;
+  }
+  .ledger:before{
+    content:"ESTIMATE";
+    position:absolute;
+    top:18px; right:22px;
+    font-family:'DM Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing:0.16em;
+    color:var(--gold-deep);
+    border:1px solid var(--gold-deep);
+    padding:3px 8px;
+    opacity:0.75;
+  }
+  .ledger h3{
+    font-size:1.3rem;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--navy);
+  }
+  .ledger-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:10px 0;
+    border-bottom:1px dashed var(--rule-strong);
+    font-size:0.92rem;
+  }
+  .ledger-row .label{color:var(--charcoal);}
+  .ledger-row .label small{display:block; color:var(--steel); font-size:0.72rem; margin-top:2px;}
+  .ledger-row .amt{
+    font-family:'DM Mono', monospace;
+    font-variant-numeric:tabular-nums;
+    color:var(--navy);
+  }
+  .ledger-row.deduction .amt:before{content:"- ";}
+  .ledger-total{
+    margin-top:18px;
+    padding-top:20px;
+    border-top:3px double var(--navy);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .ledger-total .label{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.15rem;
+    color:var(--navy);
+    font-weight:600;
+  }
+  .ledger-total .amt{
+    font-family:'DM Mono', monospace;
+    font-size:1.9rem;
+    color:var(--gold-deep);
+    font-weight:500;
+    font-variant-numeric:tabular-nums;
+  }
+  .ledger-fineprint{
+    margin-top:20px;
+    font-size:0.74rem;
+    color:var(--steel);
+    line-height:1.5;
+  }
+
+  .cta-section{
+    background:var(--navy);
+    padding:64px 6vw 60px;
+  }
+  .cta-inner{
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .cta-inner h2{
+    color:var(--cream);
+    font-size:clamp(1.8rem, 4vw, 2.4rem);
+  }
+  .cta-inner p{
+    color:#C7D2DD;
+    margin-top:14px;
+    font-size:1rem;
+  }
+  form.lead-form{
+    margin-top:34px;
+    text-align:left;
+    background:var(--navy-soft);
+    border:1px solid #33506c;
+    padding:30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:600px){
+    form.lead-form{grid-template-columns:1fr;}
+  }
+  form.lead-form .full{grid-column:1 / -1;}
+  form.lead-form label{
+    display:block;
+    font-size:0.78rem;
+    color:#C7D2DD;
+    margin-bottom:7px;
+    font-weight:500;
+  }
+  form.lead-form input, form.lead-form select{
+    width:100%;
+    padding:11px 12px;
+    font-family:'DM Sans', sans-serif;
+    font-size:0.95rem;
+    border:1px solid #3f5f7d;
+    border-radius:2px;
+    background:#F6F1E7;
+    color:var(--navy);
+  }
+  form.lead-form button{
+    grid-column:1 / -1;
+    margin-top:6px;
+    background:var(--gold);
+    color:var(--navy);
+    border:none;
+    padding:15px 20px;
+    font-family:'DM Sans', sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    border-radius:2px;
+    transition:background .2s ease;
+  }
+  form.lead-form button:hover{background:#BE9954;}
+  .form-subnote{
+    grid-column:1 / -1;
+    font-size:0.74rem;
+    color:#9AACBB;
+    margin-top:-6px;
+  }
+
+  footer{
+    padding:30px 6vw 40px;
+    font-size:0.78rem;
+    color:var(--steel);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Weis Real Estate</div>
+  <a class="callnow" href="tel:+12082541963">Call Tom at 208-254-1963</a>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Free Seller Estimate</div>
+  <h1>What will you walk away with?</h1>
+  <p class="sub">See your real number: home value minus payoff, closing costs, commission, and repairs, in under a minute.</p>
+</section>
+
+<section class="calc-wrap">
+  <div class="inputs-card">
+    <div class="field">
+      <label for="homeValue">Estimated home value</label>
+      <div class="currency-input">
+        <span>$</span>
+        <input type="text" inputmode="numeric" id="homeValue" value="450,000">
+      </div>
+      <div class="field-note">Your best guess is fine. This is a starting point, not an appraisal.</div>
+    </div>
+
+    <div class="field">
+      <label for="mortgageBalance">Remaining mortgage balance</label>
+      <div class="currency-input">
+        <span>$</span>
+        <input type="text" inputmode="numeric" id="mortgageBalance" value="240,000">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="repairs">Repairs or prep before listing</label>
+      <div class="currency-input">
+        <span>$</span>
+        <input type="text" inputmode="numeric" id="repairs" value="0">
+      </div>
+      <div class="field-note">Paint, flooring, inspection items. Enter 0 if you're not sure yet.</div>
+    </div>
+
+    <details class="assumptions">
+      <summary>Adjust commission &amp; closing cost assumptions</summary>
+      <div class="assumption-row">
+        <label for="commissionPct">Est. agent commission</label>
+        <input type="range" id="commissionPct" min="3" max="7" step="0.1" value="5.5">
+        <span class="pct-val" id="commissionPctVal">5.5%</span>
+      </div>
+      <div class="assumption-row">
+        <label for="closingPct">Est. closing costs</label>
+        <input type="range" id="closingPct" min="0.5" max="3" step="0.1" value="1.5">
+        <span class="pct-val" id="closingPctVal">1.5%</span>
+      </div>
+    </details>
+  </div>
+
+  <div class="ledger">
+    <h3>Estimated Closing Statement</h3>
+
+    <div class="ledger-row">
+      <span class="label">Estimated sale price</span>
+      <span class="amt mono" id="rowSalePrice">$450,000</span>
+    </div>
+    <div class="ledger-row deduction">
+      <span class="label">Mortgage payoff</span>
+      <span class="amt mono" id="rowMortgage">$240,000</span>
+    </div>
+    <div class="ledger-row deduction">
+      <span class="label">Agent commission <small id="commissionLabel">5.5%</small></span>
+      <span class="amt mono" id="rowCommission">$24,750</span>
+    </div>
+    <div class="ledger-row deduction">
+      <span class="label">Closing costs <small id="closingLabel">1.5%</small></span>
+      <span class="amt mono" id="rowClosing">$6,750</span>
+    </div>
+    <div class="ledger-row deduction">
+      <span class="label">Repairs / prep</span>
+      <span class="amt mono" id="rowRepairs">$0</span>
+    </div>
+
+    <div class="ledger-total">
+      <span class="label">Estimated net proceeds</span>
+      <span class="amt" id="rowTotal">$178,500</span>
+    </div>
+
+    <div class="ledger-fineprint">
+      This is a planning estimate only, not a guarantee. Your actual home value, loan payoff, commission, and closing fees could move this number up or down. See what's possible below.
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Your real number, and how to raise it.</h2>
+    <p>This is a planning estimate. Tom will pull real comps for an accurate value, tell you which repairs are worth doing, and build a pricing strategy to help you walk away with more than this. Free and no obligation.</p>
+
+    <form class="lead-form" id="leadForm" action="https://formspree.io/f/mwleqzon" method="POST">
+      <div>
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="timeline">Timeline</label>
+        <select id="timeline" name="timeline">
+          <option value="ASAP">Ready now / ASAP</option>
+          <option value="3-6 months">3 to 6 months</option>
+          <option value="Just curious">Just curious</option>
+        </select>
+      </div>
+      <div class="full">
+        <label for="address">Property address (optional)</label>
+        <input type="text" id="address" name="address">
+      </div>
+      <input type="hidden" name="estimated_net_proceeds" id="hiddenEstimate">
+      <button type="submit">Start my free strategy call</button>
+      <div class="form-subnote">Sent straight to Tom. Most sellers hear back same day.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <span>Weis Real Estate, Silvercreek Realty Group, License #ID-SP50429</span>
+  <span>&copy; <span id="year"></span> Weis Real Estate</span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+  const parseNum = v => Number(String(v).replace(/[^0-9.-]/g, '')) || 0;
+
+  const homeValueEl = document.getElementById('homeValue');
+  const mortgageEl = document.getElementById('mortgageBalance');
+  const repairsEl = document.getElementById('repairs');
+  const commissionSlider = document.getElementById('commissionPct');
+  const closingSlider = document.getElementById('closingPct');
+
+  function formatOnBlur(el){
+    el.addEventListener('blur', () => {
+      el.value = parseNum(el.value).toLocaleString('en-US');
+      calculate();
+    });
+  }
+  [homeValueEl, mortgageEl, repairsEl].forEach(formatOnBlur);
+  [homeValueEl, mortgageEl, repairsEl].forEach(el => el.addEventListener('input', calculate));
+  [commissionSlider, closingSlider].forEach(el => el.addEventListener('input', calculate));
+
+  function calculate(){
+    const homeValue = parseNum(homeValueEl.value);
+    const mortgage = parseNum(mortgageEl.value);
+    const repairs = parseNum(repairsEl.value);
+    const commissionPct = parseFloat(commissionSlider.value);
+    const closingPct = parseFloat(closingSlider.value);
+
+    const commission = homeValue * (commissionPct / 100);
+    const closing = homeValue * (closingPct / 100);
+    const net = homeValue - mortgage - commission - closing - repairs;
+
+    document.getElementById('commissionPctVal').textContent = commissionPct.toFixed(1) + '%';
+    document.getElementById('closingPctVal').textContent = closingPct.toFixed(1) + '%';
+    document.getElementById('commissionLabel').textContent = commissionPct.toFixed(1) + '%';
+    document.getElementById('closingLabel').textContent = closingPct.toFixed(1) + '%';
+
+    document.getElementById('rowSalePrice').textContent = fmt(homeValue);
+    document.getElementById('rowMortgage').textContent = fmt(mortgage);
+    document.getElementById('rowCommission').textContent = fmt(commission);
+    document.getElementById('rowClosing').textContent = fmt(closing);
+    document.getElementById('rowRepairs').textContent = fmt(repairs);
+    document.getElementById('rowTotal').textContent = fmt(net);
+    document.getElementById('hiddenEstimate').value = fmt(net);
+  }
+
+  calculate();
+</script>
+
+</body>
+</html>
