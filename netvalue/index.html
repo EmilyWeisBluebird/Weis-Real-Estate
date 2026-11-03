@@ -9,8 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#16283F;
-    --navy-soft:#22384f;
+    --navy:#1E3450;
+    --navy-soft:#283E5E;
     --steel:#4E6E8E;
     --cream:#F6F1E7;
     --parchment:#EFE7D8;
@@ -148,6 +148,131 @@
   .currency-input input:focus{
     outline:2px solid var(--steel);
     outline-offset:1px;
+  }
+
+  /* ---------- Address Lookup ---------- */
+  .address-lookup{
+    background:var(--navy);
+    border-radius:3px;
+    padding:22px 22px 20px;
+    margin-bottom:28px;
+  }
+  .address-lookup .lookup-label{
+    font-size:0.78rem;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+    font-family:'DM Mono', monospace;
+  }
+  .address-lookup .lookup-row{
+    display:flex;
+    gap:10px;
+  }
+  .address-lookup input[type=text]{
+    flex:1;
+    padding:11px 14px;
+    font-family:'DM Sans', sans-serif;
+    font-size:0.95rem;
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:2px;
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    outline:none;
+  }
+  .address-lookup input[type=text]::placeholder{color:rgba(255,255,255,0.4);}
+  .address-lookup input[type=text]:focus{border-color:var(--gold); background:rgba(255,255,255,0.12);}
+  .lookup-btn{
+    padding:11px 18px;
+    background:var(--gold);
+    color:#fff;
+    font-family:'DM Sans', sans-serif;
+    font-weight:700;
+    font-size:0.88rem;
+    border:none;
+    border-radius:2px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .2s;
+    letter-spacing:0.02em;
+  }
+  .lookup-btn:hover{background:var(--gold-deep);}
+  .lookup-btn:disabled{background:var(--steel); cursor:not-allowed;}
+
+  /* comp results panel */
+  .comp-panel{
+    margin-top:14px;
+    background:var(--parchment);
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:16px 18px 14px;
+    display:none;
+  }
+  .comp-panel.visible{display:block;}
+  .comp-panel-header{
+    font-family:'DM Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--steel);
+    margin-bottom:12px;
+  }
+  .comp-stats{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .comp-stat{
+    display:flex;
+    flex-direction:column;
+  }
+  .comp-stat .cs-label{
+    font-size:0.72rem;
+    color:var(--steel);
+    margin-bottom:3px;
+  }
+  .comp-stat .cs-val{
+    font-family:'DM Mono', monospace;
+    font-size:1.05rem;
+    font-weight:500;
+    color:var(--navy);
+  }
+  .comp-source{
+    font-size:0.72rem;
+    color:var(--steel);
+    margin-bottom:14px;
+  }
+  .use-midpoint-btn{
+    display:block;
+    width:100%;
+    padding:14px 18px;
+    background:var(--gold-deep);
+    color:#fff;
+    font-family:'DM Sans', sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    border:none;
+    border-radius:2px;
+    cursor:pointer;
+    text-align:center;
+    letter-spacing:0.01em;
+    box-shadow:0 3px 10px rgba(140,107,46,0.35);
+    transition:background .2s, box-shadow .2s;
+  }
+  .use-midpoint-btn:hover{background:var(--gold); box-shadow:0 4px 14px rgba(140,107,46,0.5);}
+  .comp-disclaimer{
+    font-size:0.70rem;
+    color:var(--steel);
+    margin-top:10px;
+    line-height:1.5;
+  }
+  .comp-disclaimer a{color:var(--gold-deep);}
+  .comp-error{
+    margin-top:10px;
+    font-size:0.82rem;
+    color:#c0392b;
   }
 
   details.assumptions{
@@ -372,13 +497,42 @@
 
 <section class="calc-wrap">
   <div class="inputs-card">
+    <!-- Address lookup -->
+    <div class="address-lookup">
+      <div class="lookup-label">Look up your home value from MLS data</div>
+      <div class="lookup-row">
+        <input type="text" id="addressInput" placeholder="Enter your property address, Boise ID">
+        <button class="lookup-btn" id="lookupBtn" onclick="lookupAddress()">Look Up →</button>
+      </div>
+      <div class="comp-panel" id="compPanel">
+        <div class="comp-panel-header" id="compHeader">MLS Comparable Sales · 1 mi radius · Last 90 days</div>
+        <div class="comp-stats">
+          <div class="comp-stat">
+            <span class="cs-label">Sales range</span>
+            <span class="cs-val" id="compRange">—</span>
+          </div>
+          <div class="comp-stat">
+            <span class="cs-label">Avg price / sq ft</span>
+            <span class="cs-val" id="compPpsf">—</span>
+          </div>
+        </div>
+        <div class="comp-source" id="compSource"></div>
+        <button class="use-midpoint-btn" id="useMidpointBtn">Use midpoint as my home value ↓</button>
+        <div class="comp-disclaimer">
+          Based on recent MLS sold data. For a full CMA with adjustments,
+          <a href="tel:+12082541963">get Tom's free analysis →</a>
+        </div>
+        <div class="comp-error" id="compError" style="display:none"></div>
+      </div>
+    </div>
+
     <div class="field">
       <label for="homeValue">Estimated home value</label>
       <div class="currency-input">
         <span>$</span>
         <input type="text" inputmode="numeric" id="homeValue" value="450,000">
       </div>
-      <div class="field-note">Your best guess is fine. This is a starting point, not an appraisal.</div>
+      <div class="field-note">Your best guess is fine — or use MLS comps above to auto-fill.</div>
     </div>
 
     <div class="field">
@@ -481,6 +635,9 @@
         <input type="text" id="address" name="address">
       </div>
       <input type="hidden" name="estimated_net_proceeds" id="hiddenEstimate">
+      <input type="hidden" name="address_looked_up" id="hiddenAddress">
+      <input type="hidden" name="comp_range_shown" id="hiddenCompRange">
+      <input type="hidden" name="comp_ppsf" id="hiddenCompPpsf">
       <button type="submit">Start my free strategy call</button>
       <div class="form-subnote">Sent straight to Tom. Most sellers hear back same day.</div>
     </form>
@@ -540,6 +697,105 @@
   }
 
   calculate();
+
+  /* ---------- Bridge Interactive Address Lookup ---------- */
+  const BRIDGE_TOKEN = '2fe926ca00e82d66f42662f571225a37';
+  const BRIDGE_BASE  = 'https://api.bridgedataoutput.com/api/v2/OData/imls';
+
+  let compMidpoint = null;
+
+  async function lookupAddress(){
+    const addressInput = document.getElementById('addressInput');
+    const addr = addressInput.value.trim();
+    if(!addr){ addressInput.focus(); return; }
+
+    const btn = document.getElementById('lookupBtn');
+    const panel = document.getElementById('compPanel');
+    const errEl = document.getElementById('compError');
+    btn.disabled = true;
+    btn.textContent = 'Looking up…';
+    panel.classList.remove('visible');
+    errEl.style.display = 'none';
+
+    try {
+      // Step 1: geocode the address to lat/lng using Bridge property search
+      const searchUrl = `${BRIDGE_BASE}/Property?access_token=${BRIDGE_TOKEN}&$filter=UnparsedAddress eq '${encodeURIComponent(addr)}'&$select=Latitude,Longitude,UnparsedAddress,ListPrice,LivingArea&$top=1`;
+      const searchRes = await fetch(searchUrl);
+      if(!searchRes.ok) throw new Error('Address not found');
+      const searchData = await searchRes.json();
+
+      let lat, lng;
+      if(searchData.value && searchData.value.length > 0){
+        lat = searchData.value[0].Latitude;
+        lng = searchData.value[0].Longitude;
+      } else {
+        // Fallback: search sold listings by address string match
+        throw new Error('Address not found in MLS. Try a nearby street or check the address.');
+      }
+
+      // Step 2: pull sold comps within ~1 mile radius (last 90 days)
+      const ninetyDaysAgo = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
+      const latDelta = 0.0145; // ~1 mile
+      const lngDelta = 0.0175;
+      const compsUrl = `${BRIDGE_BASE}/Property?access_token=${BRIDGE_TOKEN}` +
+        `&$filter=MlsStatus eq 'Closed'` +
+        ` and CloseDate ge ${ninetyDaysAgo}` +
+        ` and Latitude ge ${(lat - latDelta).toFixed(6)} and Latitude le ${(lat + latDelta).toFixed(6)}` +
+        ` and Longitude ge ${(lng - lngDelta).toFixed(6)} and Longitude le ${(lng + lngDelta).toFixed(6)}` +
+        `&$select=ClosePrice,LivingArea,CloseDate&$top=50&$orderby=CloseDate desc`;
+
+      const compsRes = await fetch(compsUrl);
+      if(!compsRes.ok) throw new Error('Could not load comp data');
+      const compsData = await compsRes.json();
+      const comps = (compsData.value || []).filter(c => c.ClosePrice > 50000 && c.LivingArea > 200);
+
+      if(comps.length < 2){
+        throw new Error('Not enough recent sales nearby. Try expanding your search or call Tom for a manual CMA.');
+      }
+
+      const prices = comps.map(c => c.ClosePrice).sort((a,b) => a-b);
+      const low = prices[0];
+      const high = prices[prices.length - 1];
+      const mid = Math.round((low + high) / 2);
+      const ppsf = comps.filter(c => c.LivingArea > 0)
+        .reduce((acc, c) => acc + (c.ClosePrice / c.LivingArea), 0) / comps.filter(c => c.LivingArea > 0).length;
+
+      compMidpoint = mid;
+      document.getElementById('compRange').textContent = `$${low.toLocaleString('en-US')} – $${high.toLocaleString('en-US')}`;
+      document.getElementById('compPpsf').textContent = `$${Math.round(ppsf).toLocaleString('en-US')} / sq ft`;
+      document.getElementById('compSource').textContent = `Based on ${comps.length} sold homes · MLS data via Bridge Interactive`;
+      document.getElementById('useMidpointBtn').textContent = `Use midpoint ($${mid.toLocaleString('en-US')}) as my home value ↓`;
+
+      // Store comp data for Formspree hidden fields
+      document.getElementById('hiddenAddress').value = addr;
+      document.getElementById('hiddenCompRange').value = `$${low.toLocaleString('en-US')} – $${high.toLocaleString('en-US')}`;
+      document.getElementById('hiddenCompPpsf').value = `$${Math.round(ppsf).toLocaleString('en-US')}/sqft`;
+
+      panel.classList.add('visible');
+
+      document.getElementById('useMidpointBtn').onclick = function(){
+        homeValueEl.value = mid.toLocaleString('en-US');
+        calculate();
+        homeValueEl.scrollIntoView({behavior:'smooth', block:'center'});
+        homeValueEl.style.transition = 'background 0.4s';
+        homeValueEl.style.background = '#fffbe6';
+        setTimeout(() => { homeValueEl.style.background = '#fff'; }, 1200);
+      };
+
+    } catch(err) {
+      errEl.textContent = err.message || 'Something went wrong. Please try again.';
+      errEl.style.display = 'block';
+      panel.classList.add('visible');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Look Up →';
+    }
+  }
+
+  // Allow Enter key in address input
+  document.getElementById('addressInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); lookupAddress(); }
+  });
 </script>
 
 </body>
