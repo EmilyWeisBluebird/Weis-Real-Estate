@@ -501,7 +501,7 @@
     <div class="address-lookup">
       <div class="lookup-label">Look up your home value from MLS data</div>
       <div class="lookup-row">
-        <input type="text" id="addressInput" placeholder="Enter your property address, Boise ID">
+        <input type="text" id="addressInput" placeholder="e.g. 3064 E Nature Dr, Boise, ID">
         <button class="lookup-btn" id="lookupBtn" onclick="lookupAddress()">Look Up →</button>
       </div>
       <div class="comp-panel" id="compPanel">
@@ -718,17 +718,16 @@
     errEl.style.display = 'none';
 
     try {
-      // Step 1: geocode the address to lat/lng using Census geocoder (free, no key needed)
-      const geoUrl = `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${encodeURIComponent(addr)}&benchmark=Public_AR_Current&format=json`;
-      const geoRes = await fetch(geoUrl);
+      // Step 1: geocode using Nominatim (OpenStreetMap, CORS-friendly)
+      const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1&countrycodes=us`;
+      const geoRes = await fetch(geoUrl, {headers:{'Accept':'application/json','User-Agent':'WeisRealEstateCalculator/1.0'}});
       if(!geoRes.ok) throw new Error('Could not geocode address');
       const geoData = await geoRes.json();
-      const matches = geoData?.result?.addressMatches;
-      if(!matches || matches.length === 0){
-        throw new Error('Address not found. Try including city and state, e.g. "726 W Gettysburg St, Boise ID"');
+      if(!geoData || geoData.length === 0){
+        throw new Error('Address not found. Try the full address, e.g. "3064 E Nature Dr, Boise, ID"');
       }
-      const lat = matches[0].coordinates.y;
-      const lng = matches[0].coordinates.x;
+      const lat = parseFloat(geoData[0].lat);
+      const lng = parseFloat(geoData[0].lon);
 
       // Step 2: pull sold comps within ~1 mile radius (last 90 days)
       const ninetyDaysAgo = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
