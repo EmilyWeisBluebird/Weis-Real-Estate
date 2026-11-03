@@ -718,20 +718,17 @@
     errEl.style.display = 'none';
 
     try {
-      // Step 1: geocode the address to lat/lng using Bridge property search
-      const searchUrl = `${BRIDGE_BASE}/Property?access_token=${BRIDGE_TOKEN}&$filter=UnparsedAddress eq '${encodeURIComponent(addr)}'&$select=Latitude,Longitude,UnparsedAddress,ListPrice,LivingArea&$top=1`;
-      const searchRes = await fetch(searchUrl);
-      if(!searchRes.ok) throw new Error('Address not found');
-      const searchData = await searchRes.json();
-
-      let lat, lng;
-      if(searchData.value && searchData.value.length > 0){
-        lat = searchData.value[0].Latitude;
-        lng = searchData.value[0].Longitude;
-      } else {
-        // Fallback: search sold listings by address string match
-        throw new Error('Address not found in MLS. Try a nearby street or check the address.');
+      // Step 1: geocode the address to lat/lng using Census geocoder (free, no key needed)
+      const geoUrl = `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${encodeURIComponent(addr)}&benchmark=Public_AR_Current&format=json`;
+      const geoRes = await fetch(geoUrl);
+      if(!geoRes.ok) throw new Error('Could not geocode address');
+      const geoData = await geoRes.json();
+      const matches = geoData?.result?.addressMatches;
+      if(!matches || matches.length === 0){
+        throw new Error('Address not found. Try including city and state, e.g. "726 W Gettysburg St, Boise ID"');
       }
+      const lat = matches[0].coordinates.y;
+      const lng = matches[0].coordinates.x;
 
       // Step 2: pull sold comps within ~1 mile radius (last 90 days)
       const ninetyDaysAgo = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
