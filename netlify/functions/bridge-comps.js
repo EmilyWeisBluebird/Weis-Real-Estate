@@ -22,19 +22,38 @@ exports.handler = async function(event) {
     ` and Longitude le ${(parseFloat(lng) + lngDelta).toFixed(6)}` +
     `&$select=ClosePrice,LivingArea,CloseDate&$top=50&$orderby=CloseDate desc`;
 
+  const corsHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  };
+
   try {
+    console.log('Bridge URL:', url);
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Bridge API error: ${res.status}`);
-    const data = await res.json();
+    const text = await res.text();
+    console.log('Bridge status:', res.status);
+    console.log('Bridge response:', text.substring(0, 500));
+
+    if (!res.ok) {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: `Bridge API error ${res.status}: ${text.substring(0, 200)}` })
+      };
+    }
+
+    const data = JSON.parse(text);
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://weisko.com'
-      },
+      headers: corsHeaders,
       body: JSON.stringify(data)
     };
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.log('Catch error:', err.message);
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: err.message })
+    };
   }
 };
