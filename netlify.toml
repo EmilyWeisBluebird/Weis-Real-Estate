@@ -3,3 +3,13 @@
 
 [functions]
   directory = "netlify/functions"
+
+[[redirects]]
+  from = "/netvalue"
+  to = "/netvalue/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/netvalue/"
+  to = "/netvalue/index.html"
+  status = 200
