@@ -460,6 +460,11 @@
     selectToggle('intentGroup', btn);
     currentIntent = intent;
 
+    if (intent === 'Sell') {
+      window.location.href = 'https://weisko.com/netvalue/';
+      return;
+    }
+
     const showBuyer = intent === 'Buy' || intent === 'Both';
     const showSeller = intent === 'Sell' || intent === 'Both';
 
