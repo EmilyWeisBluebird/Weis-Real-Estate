@@ -10,8 +10,8 @@ exports.handler = async function(event) {
   const BASE = 'https://api.bridgedataoutput.com/api/v2/OData/imls';
 
   const ninetyDaysAgo = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
-  const latDelta = 0.0145;
-  const lngDelta = 0.0175;
+  const latDelta = 0.0435;  // ~3 mile radius
+  const lngDelta = 0.0525;
 
   const url = `${BASE}/Property?access_token=${BRIDGE_TOKEN}` +
     `&$filter=MlsStatus eq 'Closed'` +
