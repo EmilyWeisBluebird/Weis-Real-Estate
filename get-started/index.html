@@ -366,6 +366,7 @@
       <div class="section-divider" id="sellerDivider"></div>
       <div class="conditional-section" id="sellerSection">
         <div class="step-label">Seller Details</div>
+        <p style="font-size:0.85rem; margin:0 0 16px; color:#666;">Want to see what you'd walk away with first? <a href="https://weisko.com/netvalue/" style="color:var(--gold); font-weight:600;">Try our free net value calculator →</a></p>
 
         <div class="toggle-label">What is your approximate home value?</div>
         <div class="toggle-group" id="homeValueGroup">
@@ -459,11 +460,6 @@
   function selectIntent(intent, btn) {
     selectToggle('intentGroup', btn);
     currentIntent = intent;
-
-    if (intent === 'Sell') {
-      window.location.href = 'https://weisko.com/netvalue/';
-      return;
-    }
 
     const showBuyer = intent === 'Buy' || intent === 'Both';
     const showSeller = intent === 'Sell' || intent === 'Both';
