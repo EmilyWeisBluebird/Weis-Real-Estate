@@ -481,12 +481,10 @@
     html{scroll-behavior:auto;}
   }
 
-  /* ---------- Floating CTA button ---------- */
-  .float-cta{
-    position:fixed;
-    bottom:24px;
-    right:20px;
-    z-index:999;
+  /* ---------- Proceeds CTA button ---------- */
+  .proceeds-cta{
+    display:block;
+    margin-top:20px;
     background:var(--gold);
     color:#fff;
     font-family:'DM Sans', sans-serif;
@@ -496,26 +494,13 @@
     padding:13px 20px;
     border-radius:3px;
     text-decoration:none;
-    box-shadow:0 4px 18px rgba(0,0,0,0.22);
-    opacity:0;
-    transform:translateY(12px);
-    transition:opacity .3s ease, transform .3s ease, background .2s ease;
-    pointer-events:none;
+    text-align:center;
+    transition:background .2s ease;
   }
-  .float-cta.visible{
-    opacity:1;
-    transform:translateY(0);
-    pointer-events:auto;
-  }
-  .float-cta:hover{background:var(--gold-deep);}
-  @media (max-width:480px){
-    .float-cta{bottom:16px; right:14px; font-size:0.82rem; padding:11px 16px;}
-  }
+  .proceeds-cta:hover{background:var(--gold-deep); color:#fff;}
 </style>
 </head>
 <body>
-
-<a class="float-cta" id="floatCta" href="#contact-tom">Talk to Tom →</a>
 
 <header>
   <div class="wordmark">Weis Real Estate</div>
@@ -631,6 +616,7 @@
     <div class="ledger-fineprint">
       This is a planning estimate only, not a guarantee. Your actual home value, loan payoff, commission, and closing fees could move this number up or down. See what's possible below.
     </div>
+    <a href="#contact-tom" class="proceeds-cta">Get my accurate number with Tom →</a>
   </div>
 </section>
 
@@ -816,16 +802,6 @@
     if(e.key === 'Enter'){ e.preventDefault(); lookupAddress(); }
   });
 
-  // Floating CTA — show after scrolling past hero
-  (function(){
-    var btn = document.getElementById('floatCta');
-    var threshold = 320;
-    function onScroll(){
-      if(window.scrollY > threshold){ btn.classList.add('visible'); }
-      else { btn.classList.remove('visible'); }
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-  })();
 </script>
 
 </body>
