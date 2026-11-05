@@ -434,6 +434,90 @@
     letter-spacing: 0.03em;
   }
 
+  /* ===== NEWSLETTER ===== */
+  .newsletter {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 72px 32px;
+    text-align: center;
+  }
+  .newsletter-inner {
+    max-width: 540px;
+    margin: 0 auto;
+  }
+  .newsletter-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--steel);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .newsletter h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(26px, 4vw, 34px);
+    color: var(--navy-deep);
+    line-height: 1.2;
+  }
+  .newsletter p {
+    margin-top: 14px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+  .newsletter-form {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .newsletter-form input[type="email"] {
+    flex: 1 1 240px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--ink);
+    outline: none;
+    background: var(--cream);
+    transition: border-color 0.2s ease;
+  }
+  .newsletter-form input[type="email"]:focus {
+    border-color: var(--navy);
+  }
+  .newsletter-form button {
+    padding: 14px 26px;
+    background: var(--navy);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+  .newsletter-form button:hover { background: var(--navy-deep); }
+  .newsletter-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--mid);
+    opacity: 0.75;
+  }
+  .newsletter-success {
+    display: none;
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--navy);
+    font-weight: 500;
+  }
+
   /* ===== FOOTER / CONTACT ===== */
   footer {
     background: var(--navy-deep);
@@ -581,6 +665,46 @@
     </div>
   </div>
 </section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-inner">
+    <div class="newsletter-eyebrow">Free Monthly Report</div>
+    <h2>Stay ahead of the Boise market.</h2>
+    <p>Get a quick snapshot of what's selling, what's sitting, and what it means for buyers and sellers in the Treasure Valley — straight to your inbox, once a month.</p>
+    <!-- Replace the action URL below with your Mailchimp form action URL once your account is set up -->
+    <form class="newsletter-form"
+          action="MAILCHIMP_FORM_ACTION_URL"
+          method="post"
+          target="_blank"
+          novalidate
+          onsubmit="handleNewsletterSubmit(event, this)">
+      <input type="email" name="EMAIL" placeholder="Your email address" required>
+      <!-- Mailchimp anti-bot field — do not remove -->
+      <div style="position:absolute;left:-5000px;" aria-hidden="true">
+        <input type="text" name="b_MAILCHIMP_HIDDEN_FIELD" tabindex="-1" value="">
+      </div>
+      <button type="submit">Get the Report →</button>
+    </form>
+    <div class="newsletter-note">No spam. Unsubscribe anytime.</div>
+    <div class="newsletter-success" id="newsletterSuccess">✓ You're in! Watch for your first report.</div>
+  </div>
+</section>
+
+<script>
+function handleNewsletterSubmit(e, form) {
+  if (form.action.includes('MAILCHIMP_FORM_ACTION_URL')) {
+    e.preventDefault();
+    alert('Newsletter coming soon — Mailchimp setup in progress!');
+    return;
+  }
+  // Real Mailchimp submit — let it go, then show success
+  setTimeout(function() {
+    form.style.display = 'none';
+    document.getElementById('newsletterSuccess').style.display = 'block';
+  }, 1000);
+}
+</script>
 
 <!-- FOOTER -->
 <footer>
